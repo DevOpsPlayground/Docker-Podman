@@ -69,6 +69,10 @@ Your output should look like below
 
 **Note3:** Images pulled by Docker will not be visible for Podman and images pulled by docker will not be visible for Docker as they are stored in the different directory on the host.
 
+## We have an imgage - lets run it
+
+# **Run Nginx and attach content as a volume - remember to add steps here!!!**
+
 ## Time to build
 On your instance go to the directory with the llab repository. If you got lost - just execute:
 ```
@@ -129,10 +133,10 @@ curl localhost:8081
 ```
 and for Podman
 ```
-localhost:8080
+curl localhost:8080
 ```
 
-If you want to see it at full glance - in your web browser go to `${your}-panda.devopspllayground.org:${port}`
+If you want to see it at full glance - in your web browser go to `${your}-panda.devopspllayground.org:${port}`. Replace ${your} with your unique identifier and port with 8080 or/and 8081.
 ## Well done!!!
 Lab number one completed! You know how to build and run a container now and you understand the difference between Daemon and Daemonless design - time for lab number 2
 
