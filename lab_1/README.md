@@ -9,8 +9,11 @@ followed by
 podman --version
 ```
 You should see:
+
 ![docker-version](./images/docker-version.png)
+
 For those who already know they way around and also executed `docker ps` and/or `podman ps` - commands which will show us running containers and noticed that we already have some containers running in docker. You should see the following output:
+
 ![docker-ps](./images/docker-ps.png)
 **Please do not stop those two Docker containers at any point of the lab. Wetty allows you to access the instance via web browser, while code-server is serving you the IDE.**
 ## Daemon vs Daemonless
