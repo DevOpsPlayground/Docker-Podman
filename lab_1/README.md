@@ -30,7 +30,7 @@ ps aux | grep podman
 Your output should look like:
 ![ps-aux](./images/ps-aux.png)
 
-We can see in the example above that in case of docker our Daemon (PID 2845) maybe is not overloading our host it is consuming more resources than our two containers (PID's 8246, 8282, 8459).
+We can see in the example above that in case of docker our Daemon (PID 2845) maybe is not overloading our host, but it is consuming more resources than our two containers combined (PID's 8246, 8282, 8459).
 
 Ok, there is no daemon for Podman, but something is running - what is it then? Once we execute Podman command it activates the API Socket for 5000s. If we will terminate the process by running
 ```bash
@@ -67,18 +67,43 @@ Your output should look like below
 
 **Note2:** For docker, you could also simply run `docker pull nginx` which would default to docker hub registry. Podman by default will ask you to specify the repository unless you will configure it differently by editing `/etc/containers/registries.conf`. Of course Docker hub is not the only container registry, you might end up using other public or private registry of your choice.
 
-**Note3:** Images pulled by Docker will not be visible for Podman and images pulled by docker will not be visible for Docker as they are stored in the different directory on the host.
+**Note3:** Images pulled by Docker will not be visible for Podman and images pulled by Podman will not be visible for Docker as they are stored in the different directory on the host.
 
-## We have an imgage - lets run it
+## We have some images - lets run them
+Before we start build our bespoke container, lets run the images we have. We have an nginx container which will be serving static website. We will add it to our custom image in the next step, but for now we are going to attach it as a volume. We will mount the directory on the host where our creation resides to the container.
 
-# **Run Nginx and attach content as a volume - remember to add steps here!!!**
+We need to execute the following:
+```bash
+docker run -itd -p 8081:80 --volume ~/workdir/Docker-Podman/lab_1:/usr/share/nginx/html nginx
+```
+and
+```bash
+podman run -itd -p 8080:80 --volume ~/workdir/Docker-Podman/lab_1:/usr/share/nginx/html nginx
+```
+We can see our website by accessing `${your}-panda.devopspllayground.org:${port}`. Replace ${your} with your unique identifier and port with 8080 or/and 8081.
+
+Running containers present us great opportunity to break something and see if all that talk about single point of failure is worth anything. We are going to `kill` the Podman process!
+
+Type 
+```bash
+ps aux | grep podman again
+```
+Note the PID of the Podman process and
+```bash
+kill ${your-podman-PID}
+```
+Replace your `${your-podman-PID}` with the number - see example below
+![kill](./images/kill.png)
+You can see that despite brutally terminating the process our container is still just fine. If we do the same for Docker all our container will be terminated as well.
+### **Please do not kill the Docker process - it will terminate your wetty session and give our support team a headache - I will just demonstrate this step!**
+
 
 ## Time to build
-On your instance go to the directory with the llab repository. If you got lost - just execute:
+On your instance go to the directory with the lab repository. If you got lost - just execute:
 ```
 cd $HOME/workdir/Docker-Podman/lab_1
 ```
-You should find a `Dockerfile` and `index.html` there. We are going to build a container using Nginx as a base image. We will just add our astonishing website so we can run the container with our content.
+You should find a `Dockerfile` and `index.html` there. We are going to build a container using Nginx as a base image. We will just add our astonishing website so we can run the container with our content without attaching the volume.
 
 Lets have a look on our `Dockerfile`. We can do it using provided IDE (${your}-panda.devopsplayground.org:8000). 
 
@@ -117,11 +142,11 @@ podman history webapp:1.0
 ## Lets see if it works!
 We have our bespoke image ready! Time to see if all that effort was worth it! To run our newly baked containers we will need to execute the following:
 ```
-docker run -itd -p 8081:80 --name webp webapp:1.0
+docker run -itd -p 8081:80 --name webapp webapp:1.0
 ```
 and
 ```
-podman run -itd -p 8080:80 --name webp webapp:1.0
+podman run -itd -p 8080:80 --name webapp webapp:1.0
 ```
 **Note** While we can use the same port on the container as they do not know about each other, we need to bind them to a different port on the host.
 
