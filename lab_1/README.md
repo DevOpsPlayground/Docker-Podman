@@ -148,7 +148,7 @@ and
 ```
 podman run -itd -p 8080:80 --name webapp webapp:1.0
 ```
-**Note** While we can use the same port on the container as they do not know about each other, we need to bind them to a different port on the host.
+**Note** While we can use the same port on the container as they do not know about each other but we need to bind them to a different port on the host.
 
 Once you started the containers - have a look on what we created! 
 
@@ -161,7 +161,7 @@ and for Podman
 curl localhost:8080
 ```
 
-If you want to see it at full glance - in your web browser go to `${your}-panda.devopspllayground.org:${port}`. Replace ${your} with your unique identifier and port with 8080 or/and 8081.
+If you want to see it at full glance again - in your web browser go to `${your}-panda.devopspllayground.org:${port}`. Replace ${your} with your unique identifier and port with 8080 or/and 8081.
 ## Well done!!!
 Lab number one completed! You know how to build and run a container now and you understand the difference between Daemon and Daemonless design - time for lab number 2
 
