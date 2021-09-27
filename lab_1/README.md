@@ -165,4 +165,6 @@ If you want to see it at full glance again - in your web browser go to `${your}-
 ## Well done!!!
 Lab number one completed! You know how to build and run a container now and you understand the difference between Daemon and Daemonless design - time for lab number 2
 
-[Rootless and Rootfull](../lab_2/README.md)
+**Next:** [Rootless and Rootfull](../lab_2/README.md)
+
+Back to the [main page](../README.md)

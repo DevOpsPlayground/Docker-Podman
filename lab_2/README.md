@@ -111,8 +111,8 @@ curl ${your-panda}.devopsplayground.org:8080
 There is one more way to communiacate between two rootless containers. We need to run both of them within the same pod. We will talk about the pods in the next lab.
 
 If your typing skills are as bad as mine your outputs should look like:
-![rootless-comms](./images/rootless-comms.png)
 
+![rootless-comms](./images/rootless-comms.png)
 
 ### Rootful
 When running containers as root they are attached to the CNI by default and we do not need to create it. The container IP will be routable from the host. 
@@ -133,7 +133,8 @@ Finally lets try to curl its IP from the host
 curl ${container IP}
 ```
 
-Your outputs should look like below
+Your outputs should look like below:
+
 ![rootful](./images/rootful.png)
 
 **Note:** You will see the same behaviour with your Docker container. CNI will be created, your container will be attached to it once started and routable IP will be assigned (see example below)
@@ -142,10 +143,20 @@ Your outputs should look like below
 When running our containers in a rootful mode, our container IP is also routable from other containers. This is also a default behaviour for docker.
 
 Podman:
+
 ![rootful-podman](./images/rootful-podman.png)
 Docker:
+
 ![rootful-docker](./images/rootful-docker.png)
 
 
 ## Docker rootless
+
 Docker rootless execution requires installation of additional package by the user (see [docs](https://docs.docker.com/engine/security/rootless/)). Once the package is installed we need to explicitly specify that we want run our containers in rootless mode. Once configuration is completed, we can observe the similar behaviour as seen with Podman. Networking is also handled by `slirp4netns` library and we can observe the similar drawbacks.
+
+## Well done!!!
+You completed lab number two. You should now know the difference between rootless and rootful containers as well as how each of the technologies approach those modes. In our last lab we will talk about the approach to orchestration.
+
+**Next:** [Pods and Swarm](../lab_3/README.md)
+
+Back to the [main page](../README.md)

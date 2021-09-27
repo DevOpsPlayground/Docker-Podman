@@ -8,7 +8,7 @@ An overview of what we are going to cover. In each step we will try to note any 
 1. [Build and run](./lab_1/README.md) - We will build and run a simple container image and cover basic commands and fuctionality.
 2. [Rootless and Rootfull](./lab_2/README.md)
 We will run our containers in both modes.
-3. Pods and Swarm
+3. [Pods and Swarm](./lab_3/README.md)
 We will have a look on basics of orchestration.
 
 ## Lab environment
