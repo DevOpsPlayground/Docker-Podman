@@ -1,10 +1,10 @@
-# Rootless and Rootfull
+# Rootless and Rootful
 ## Intro
-In this section we will go over the differences in running rootfull and rootless containers. Podman's default behaviour is to run container in the rootless mode while Docker will run them as a root. Some of you probably already noticed it while we were looking on the processes in the previous lab.
+In this section we will go over the differences in running rootful and rootless containers. Podman's default behaviour is to run container in the rootless mode while Docker will run them as a root. Some of you probably already noticed it while we were looking on the processes in the previous lab.
 
-**Note** Both Podman and Docker can run rootless and rootfull containers. Docker added rootless mode as an experimental feature in v19.03 and it graduated in v20.10
+**Note** Both Podman and Docker can run rootless and rootful containers. Docker added rootless mode as an experimental feature in v19.03 and it graduated in v20.10
 
-## Podman rootfull
+## Podman rootful
 Running podman containers as a root does not require much effort. All you need to do is to add `sudo` at the begging of your command. 
 Go ahead and type:
 ```bash
@@ -38,15 +38,15 @@ Root user despite all its power could not find our container. It is because the 
 
 To run our container as a root we need to rebuild/move or push and pull from the remote registry.
 
-In the next section we will be playing with rootless and rootfull containers so lets rebuild it:
+In the next section we will be playing with rootless and rootful containers so lets rebuild it:
 ```bash
 cd $HOME/workdir/Docker-Podman/lab_1
-podman build --tag=webapp:1.0 . 
+sudo podman build --tag=webapp:1.0 . 
 ```
 
 **Note** While running containers in the rootless mode gives us separation of concerns it comes with some limitations ([docs](https://github.com/containers/podman/blob/main/rootless.md)).
 
-## Podman networking (Rootless and Rootfull)
+## Podman networking (Rootless and Rootful)
 ### Rootless
 Running rootless containers will affect their networking as non-privilliged users cannot create network interfaces on the host. Instead of CNI podman uses slirp4netns as defaullt network mode,but containers will not have routable ip address. 
 
@@ -65,7 +65,7 @@ Feel free to try
 ```bash
 podman inspect webapp
 ```
-to see the full output of inspect command.
+to see the ful output of inspect command.
 Podman since version 3.0 technically allows us to create CNI for rootles containers which will run as a side car. The IP assigned to the container nevertheless will not be routable from the host.
 
 We can do it by executing the following steps
@@ -88,12 +88,38 @@ Your outputs should look like below
 
 ![sidecar](./images/sidecar.png)
 
-### Rootfull
-When running containers as root they are attached to the cni as default and we do not need to create it. The container IP will be also routable from the host. 
+You can try to curl the IP from the output from the host, but it will time out
+
+**Communication between rootless containers**
+If we create a network for our rootless container while it is IP is not routable from the host we can reach it from another container.
+
+We have our webapp running, lets start another container, but this time we will exec into our nginx server.
+
+```bash
+podman run -it --net cni-podman0 nginx /bin/sh
+```
+Once on the container lets try to curl the IP address of our web app
+```bash
+curl ${IP}
+```
+Another way to communicate between rootles containers is to leverage port mapping and reaching it using the host IP/DNS.
+
+While still in nginx container try
+```bash
+curl ${your-panda}.devopsplayground.org:8080
+```
+There is one more way to communiacate between two rootless containers. We need to run both of them within the same pod. We will talk about the pods in the next lab.
+
+If your typing skills are as bad as mine your outputs should look like:
+![rootless-comms](./images/rootless-comms.png)
+
+
+### Rootful
+When running containers as root they are attached to the CNI by default and we do not need to create it. The container IP will be routable from the host. 
 We can verify that by following the steps below:
 
 First lets see if the CNI is there:
-```
+```bash
 sudo podman network ls
 sudo podman network inspect podman
 ```
@@ -108,10 +134,18 @@ curl ${container IP}
 ```
 
 Your outputs should look like below
-![rootfull](./images/rootfull.png)
+![rootful](./images/rootful.png)
 
-**Note** You will see the same behaviour with your Docker container. CNI will be created, your container will be attached to it once started and routable IP will be assigned (see example below)
+**Note:** You will see the same behaviour with your Docker container. CNI will be created, your container will be attached to it once started and routable IP will be assigned (see example below)
 
-![docker-default](./images/docker-default.png)
+**Communication between rootful containers**
+When running our containers in a rootful mode, our container IP is also routable from other containers. This is also a default behaviour for docker.
+
+Podman:
+![rootful-podman](./images/rootful-podman.png)
+Docker:
+![rootful-docker](./images/rootful-docker.png)
+
 
 ## Docker rootless
+Docker rootless execution requires installation of additional package by the user (see [docs](https://docs.docker.com/engine/security/rootless/)). Once the package is installed we need to explicitly specify that we want run our containers in rootless mode. Once configuration is completed, we can observe the similar behaviour as seen with Podman. Networking is also handled by `slirp4netns` library and we can observe the similar drawbacks.
