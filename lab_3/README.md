@@ -65,7 +65,7 @@ You should see 3 containers running. One of them is a side car which is handling
 
 We can take it a step further and generate a k8s manifest out of our pod.
 ```
-podman generate kube panda-pod.yaml
+podman generate kube panda-pod >> panda-pod.yaml
 ```
 This funcionality is still under development and might not work for all use cases, nevertheless still pretty cool!
 

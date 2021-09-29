@@ -91,6 +91,7 @@ Your outputs should look like below
 You can try to curl the IP from the output from the host, but it will time out
 
 **Communication between rootless containers**
+
 If we create a network for our rootless container while it is IP is not routable from the host we can reach it from another container.
 
 We have our webapp running, lets start another container, but this time we will exec into our nginx server.
@@ -157,6 +158,6 @@ Docker rootless execution requires installation of additional package by the use
 ## Well done!!!
 You completed lab number two. You should now know the difference between rootless and rootful containers as well as how each of the technologies approach those modes. In our last lab we will talk about podman pods.
 
-**Next:** [Pods and Swarm](../lab_3/README.md)
+**Next:** [Pods](../lab_3/README.md)
 
 Back to the [main page](../README.md)
