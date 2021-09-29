@@ -155,7 +155,7 @@ Docker:
 Docker rootless execution requires installation of additional package by the user (see [docs](https://docs.docker.com/engine/security/rootless/)). Once the package is installed we need to explicitly specify that we want run our containers in rootless mode. Once configuration is completed, we can observe the similar behaviour as seen with Podman. Networking is also handled by `slirp4netns` library and we can observe the similar drawbacks.
 
 ## Well done!!!
-You completed lab number two. You should now know the difference between rootless and rootful containers as well as how each of the technologies approach those modes. In our last lab we will talk about the approach to orchestration.
+You completed lab number two. You should now know the difference between rootless and rootful containers as well as how each of the technologies approach those modes. In our last lab we will talk about podman pods.
 
 **Next:** [Pods and Swarm](../lab_3/README.md)
 
