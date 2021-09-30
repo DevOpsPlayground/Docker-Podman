@@ -86,7 +86,7 @@ Running containers present us great opportunity to break something and see if al
 
 Type 
 ```bash
-ps aux | grep podman again
+ps aux | grep podman
 ```
 Note the PID of the Podman process and
 ```bash
